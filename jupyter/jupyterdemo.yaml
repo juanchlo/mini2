@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter-notebook
+  template:
+    metadata:
+      labels:
+        app: jupyter-notebook
+    spec:
+      containers:
+      - name: jupyter-notebook
+        image: juanchlo/compunube:jupyterdemo  # Reemplaza con tu imagen Docker
+        ports:
+        - containerPort: 8888
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyter-notebook-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8888
+    protocol: TCP
+  selector:
+    app: jupyter-notebook

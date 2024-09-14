@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cvmini2
+spec:
+  selector:
+    matchLabels:
+      app: cvmini2
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: cvmini2
+    spec:
+      containers: 
+      - name: cvmini2
+        image: juanchlo/compunube:cvmini2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cvmini2-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: cvmini2
